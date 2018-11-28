@@ -8,8 +8,8 @@ app.set('view engine', 'hbs');
 
 app.use(express.static(__dirname + '/public'));
 app.use((req, res, next) => {
-    const log = `log: ${new Date().toString()}-${req.method}-${req.url}\n`;
-    fs.appendFile('server.log', log);
+    const message = `log: ${new Date().toString()}-${req.method}-${req.url}\n`;
+    fs.appendFile('server.log', message, (error) => { /* handle error */ });
     next();
 });
 // app.use((req, res, next) => {
@@ -30,10 +30,15 @@ app.get('/about', (req, res) => {
     });
 })
 
+app.get('/projects', (req, res) => {
+    res.render(`projects.hbs`, {
+        pageTitle: 'Projects Page'
+    });
+})
+
 app.get('/', (req, res) => {
     res.render(`home.hbs`, {
-        pageTitle: 'Home Page',
-        currentYear: new Date().getFullYear()
+        pageTitle: 'Home Page'
     });
 })
 
